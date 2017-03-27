@@ -46,7 +46,8 @@ font pango:System San Francisco Display 10
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+#bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec urxvt +sb 
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -115,25 +116,26 @@ bindsym $mod+a focus parent
 
 # Startup Programs
   exec --no-startup-id nm-applet
-  exec --no-startup-id python2 /home/malmax/Pictures/8bitday/8bitday.py
   #exec --no-startup-id dunst
   #exec --no-startup-id dropbox
   #exec_always --no-startup-id feh --bg-scale ~/.wallpaper.png
 
-set $workspace1 "1: Firefox "
-set $workspace2 "2: Terminal "
-set $workspace3 "3: "
-set $workspace4 "4: "
+set $workspace1 "1:Start"
+set $workspace2 "2:t"
+set $workspace3 "3:Web"
+set $workspace4 "4:Excel"
 set $workspace5 "5: "
 set $workspace6 "6: "
 set $workspace7 "7: "
 set $workspace8 "8: "
-set $workspace9 "9: "
+set $workspace9 "9:Chat"
 set $workspace10 "10: "
+
+#workspace $workspace2; exec urxvt
 
 # switch to workspace
 bindsym $mod+1 workspace $workspace1
-bindsym $mod+2 workspace $workspace2
+bindsym $mod+2 workspace $workspace2 
 bindsym $mod+3 workspace $workspace3
 bindsym $mod+4 workspace $workspace4
 bindsym $mod+5 workspace $workspace5
@@ -155,15 +157,30 @@ bindsym $mod+Shift+8 move container to workspace $workspace8
 bindsym $mod+Shift+9 move container to workspace $workspace9
 bindsym $mod+Shift+0 move container to workspace $workspace10
 
+#Workspace9 - Skype Telegram
+assign [class="Skype"] $workspace9
+exec --no-startup-id i3-msg "exec skype"
+assign [class="Telegram"] $workspace9
+exec --no-startup-id i3-msg "exec Telegram"
+assign [class="libreoffice-calc"] $workspace4
+#exec urxvt -title console
 
-assign [class="Firefox"] $workspace1
+#Workspace 2 - Atom
+exec --no-startup-id "i3-msg 'workspace 2:t; append_layout /home/malmax/.config/i3/workspace-2.json'"
+exec --no-startup-id i3-msg "workspace 2:t; exec atom; exec urxvt; exec urxvt"
+
+#Workspace 3 - WEB
+exec --no-startup-id "i3-msg 'workspace 3:Web; append_layout /home/malmax/.config/i3/workspace-3.json'"
+exec --no-startup-id i3-msg "workspace 3:Web; exec google-chrome; exec urxvt"
+#Workspace 1 - Start python script
+#exec --no-startup-id i3-msg "workspace 1:Start; exec python2 /home/malmax/Pictures/8bitday/8bitday.py"
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+Shift+e exec i3-msg "exit"
 bindsym $mod+Shift+x exec i3lock --color "$base01"
 
 # resize window (you can also use the mouse for that)
@@ -262,5 +279,4 @@ exec_always gsettings set org.nemo.desktop show-desktop-icons false
 exec_always compton -f
 
 # Language change
-exec "setxkbmap -layout us,ru"
-exec "setxkbmap -option 'grp:alt_shift_toggle'"
+exec setxkbmap "us,ru" ",winkeys" "grp:alt_shift_toggle"
