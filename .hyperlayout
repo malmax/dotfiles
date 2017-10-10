@@ -1,0 +1,7 @@
+[
+    [[
+        "clear",
+        ["cd ~/Documents/node/gb2apiserver", "cd ~/Documents/node"]
+    ]],
+    "clear"
+]
